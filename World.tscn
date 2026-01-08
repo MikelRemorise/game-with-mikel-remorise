@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0mq3qh2apuwj"]
+
+[ext_resource type="Script" uid="uid://ojpbp4hgv2fw" path="res://Player.cs" id="1_c6gwx"]
+[ext_resource type="PackedScene" uid="uid://sjenndpmom3u" path="res://Enemy.tscn" id="2_2dftf"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_e6d4v"]
+vertices = PackedVector3Array(-9.5, 0.75, -9.5, -9.5, 0.75, 9.5, 9.5, 0.75, 9.5, 9.5, 0.75, -9.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+geometry_source_geometry_mode = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_s7bn3"]
+size = Vector3(20, 0.5, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2hac7"]
+size = Vector3(20, 0.5, 20)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qp131"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6do27"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_e6d4v")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D" groups=["navigation_mesh_source_group"]]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D"]
+mesh = SubResource("BoxMesh_s7bn3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_2hac7")
+debug_color = Color(0.62427855, 0.36174396, 0.980872, 0.41960785)
+
+[node name="player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.621, 1.25, 0)
+script = ExtResource("1_c6gwx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player"]
+mesh = SubResource("CapsuleMesh_qp131")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
+shape = SubResource("CapsuleShape3D_6do27")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.90630776, 0.42261827, 0, -0.42261827, 0.90630776, 0, 6, 10)
+
+[node name="sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -45, 45, 0)
+light_energy = 1.2
+
+[node name="Enemy" parent="." instance=ExtResource("2_2dftf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.898437, 1.25, -0.105746746)
